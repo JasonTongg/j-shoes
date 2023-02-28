@@ -69,7 +69,7 @@ export const actions = {
           localStorage.getItem("token"),
         {
           ...shoe,
-          userId: state.userData.userId,
+          userId: JSON.parse(localStorage.getItem("user")).userId,
         }
       )
       .then((response) => {

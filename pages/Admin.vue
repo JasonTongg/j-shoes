@@ -4,11 +4,16 @@
     <main>
       <h2>Product <span>Sale</span></h2>
       <div class="productItems">
-        <div class="item" v-for="shoe in shoes">
-          <img :src="shoe.img" alt="" />
+        <div
+          class="item"
+          v-for="shoe in shoes.filter(
+            (item) => item.userId === userData.userId
+          )"
+        >
+          <img :src="shoe.image" alt="" />
           <h2>{{ shoe.name }}</h2>
-          <h3>{{ shoe.priceThrough }}</h3>
-          <h3>{{ shoe.price }}</h3>
+          <h3>Rp. {{ Math.round(shoe.price * 1.6) }},-</h3>
+          <h3>Rp. {{ shoe.price }},-</h3>
           <div class="buttons">
             <button @click="toggleOverlay(true, shoe.id)">
               <img src="../static/assets/icon/trash.svg" alt="trash" /> Delete
@@ -74,6 +79,9 @@ export default {
   computed: {
     shoes() {
       return this.$store.getters.getShoes;
+    },
+    userData() {
+      return this.$store.getters.getUserData;
     },
   },
 };

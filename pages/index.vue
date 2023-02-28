@@ -5,10 +5,10 @@
       <h2>Product <span>Sale</span></h2>
       <div class="productItems">
         <div class="item" v-for="shoe in shoes">
-          <img :src="shoe.img" alt="" />
+          <img :src="shoe.image" alt="" />
           <h2>{{ shoe.name }}</h2>
-          <h3>{{ shoe.priceThrough }}</h3>
-          <h3>{{ shoe.price }}</h3>
+          <h3>Rp. {{ Math.round(shoe.price * 1.6) }},-</h3>
+          <h3>Rp. {{ shoe.price }},-</h3>
           <nuxt-link
             tag="button"
             :to="{ path: 'details', query: { shoes: shoe } }"

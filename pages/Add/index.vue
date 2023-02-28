@@ -25,19 +25,27 @@ export default {
   data() {
     return {
       title: "",
-      price: 0,
+      price: "",
       image: "",
     };
   },
   methods: {
     addItem() {
-      this.$store
-        .dispatch("addShoe", {
-          title: this.title,
-          price: this.price,
-          image: this.image,
-        })
-        .then(() => this.$router.push("/"));
+      if (
+        this.title.length > 0 &&
+        this.price.length > 0 &&
+        this.image.length > 0
+      ) {
+        this.$store
+          .dispatch("addShoe", {
+            title: this.title,
+            price: this.price,
+            image: this.image,
+          })
+          .then(() => this.$router.push("/"));
+      } else {
+        alert("Please fill the form");
+      }
     },
   },
 };

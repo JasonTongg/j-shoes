@@ -11,6 +11,7 @@
         <nuxtLink tag="li" to="/admin" v-if="userData.userName">{{
           userData.userName
         }}</nuxtLink>
+        <li v-if="userData.userName" @click="logout">Logout</li>
         <nuxtLink tag="li" to="/login" v-else>Login</nuxtLink>
       </ul>
     </nav>
@@ -21,6 +22,11 @@ export default {
   computed: {
     userData() {
       return this.$store.getters.getUserData;
+    },
+  },
+  methods: {
+    logout() {
+      alert("logout");
     },
   },
 };

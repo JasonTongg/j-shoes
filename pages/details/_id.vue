@@ -2,11 +2,11 @@
   <div class="container">
     <Navbar></Navbar>
     <main>
-      <img :src="shoe.img" :alt="shoe.name" />
+      <img :src="shoe.image" :alt="shoe.name" />
       <div class="info">
         <h2>{{ shoe.name }}</h2>
-        <p>{{ shoe.priceThrough }}</p>
-        <p>{{ shoe.price }}</p>
+        <p>Rp. {{ Math.round(shoe.price * 1.6) }},-</p>
+        <p>Rp. {{ shoe.price }},-</p>
         <p>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. A beatae
           veritatis, consequatur voluptates qui rem cum possimus deserunt dolor
