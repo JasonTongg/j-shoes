@@ -5,6 +5,7 @@ export const state = () => ({
   shoes: [],
   token: "",
   userData: {},
+  cart: [],
 });
 
 export const getters = {
@@ -13,6 +14,9 @@ export const getters = {
   },
   getUserData(state) {
     return state.userData;
+  },
+  getCart(state) {
+    return state.cart;
   },
 };
 
@@ -37,6 +41,13 @@ export const mutations = {
     const shoe = state.shoes.filter((item) => item.id === payload.id);
     state.shoes[shoe.id] = payload;
   },
+  addToCart(state, payload) {
+    return state.cart.push(payload);
+  },
+  setToCart(state, payload) {
+    console.log(payload);
+    state.cart = payload;
+  },
 };
 
 export const actions = {
@@ -51,6 +62,40 @@ export const actions = {
         commit("setShoes", shoeArray);
       })
       .catch((e) => context.error(e));
+  },
+  addUserCart({ state, commit }, shoe) {
+    return axios
+      .post(
+        `https://j-shoe-default-rtdb.firebaseio.com/accountCart${
+          JSON.parse(localStorage.getItem("user")).userId
+        }.json?auth=` + localStorage.getItem("token"),
+        {
+          ...shoe,
+        }
+      )
+      .then((response) => {
+        commit("addToCart", {
+          ...shoe,
+        });
+      });
+  },
+  getUserCart({ state, commit }) {
+    return axios
+      .get(
+        `https://j-shoe-default-rtdb.firebaseio.com/accountCart${state.userData.userId}.json?auth=` +
+          localStorage.getItem("token")
+      )
+      .then((response) => {
+        if (response.data) {
+          const cartArray = [];
+          for (const key in response.data) {
+            cartArray.push({ ...response.data[key] });
+          }
+          commit("setToCart", cartArray);
+        } else {
+          commit("setToCart", []);
+        }
+      });
   },
   deleteShoes({ commit }, shoeId) {
     return axios
@@ -96,7 +141,6 @@ export const actions = {
       ? "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="
       : "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=";
 
-    console.log(authData);
     return axios
       .post(authUrl + webAPIKey, {
         email: authData.email,
@@ -130,8 +174,13 @@ export const actions = {
               userName: response.data.displayName,
             })
           );
+        } else {
+          localStorage.setItem("userId", response.data.localId);
         }
       })
       .catch((error) => console.log(error.response.data.message));
+  },
+  userLogout({ commit }) {
+    commit("setUserData", {});
   },
 };

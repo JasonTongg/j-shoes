@@ -1,13 +1,16 @@
-<template lang="">
+<template>
   <header>
     <nav>
       <nuxtLink tag="h2" to="/">Shoes <span>Collections</span></nuxtLink>
       <ul>
         <li>Home</li>
         <li>Collections</li>
-        <li>Brands</li>
         <li>Sale</li>
-        <li>Cart</li>
+        <li>
+          Cart
+          <img src="../static/assets/icon/cart.svg" alt="cart" />
+          <p v-show="cart.length > 0"></p>
+        </li>
         <nuxtLink tag="li" to="/admin" v-if="userData.userName">{{
           userData.userName
         }}</nuxtLink>
@@ -15,18 +18,29 @@
         <nuxtLink tag="li" to="/login" v-else>Login</nuxtLink>
       </ul>
     </nav>
+    {{ cart }}
   </header>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      cart: [],
+    };
+  },
   computed: {
     userData() {
       return this.$store.getters.getUserData;
     },
   },
+  mounted() {
+    this.$store.dispatch("getUserCart");
+    this.cart = this.$store.getters.getCart;
+  },
   methods: {
     logout() {
-      alert("logout");
+      this.$store.dispatch("userLogout");
+      this.cart = [];
     },
   },
 };
@@ -81,6 +95,25 @@ header nav ul li {
   font-size: 1.2rem;
   cursor: pointer !important;
   color: white;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  gap: 0.3rem;
+  position: relative;
+}
+
+header nav ul li img {
+  width: 20px;
+}
+
+header nav ul li p {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
 }
 
 header nav ul li:last-of-type,

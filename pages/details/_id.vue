@@ -14,7 +14,7 @@
           voluptatum. Unde, eveniet. Lorem ipsum dolor sit amet consectetur
           adipisicing elit. Veniam, eum.
         </p>
-        <button>Add to cart</button>
+        <button @click="addCart">Add to cart</button>
       </div>
     </main>
     <Footer></Footer>
@@ -32,6 +32,11 @@ export default {
     return {
       shoe: this.$route.query.shoes,
     };
+  },
+  methods: {
+    addCart() {
+      this.$store.dispatch("addUserCart", this.$route.query.shoes);
+    },
   },
 };
 </script>
