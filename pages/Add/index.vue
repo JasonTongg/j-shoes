@@ -29,6 +29,7 @@ export default {
       image: "",
     };
   },
+  middleware: ["check-auth", "auth"],
   methods: {
     addItem() {
       if (
@@ -59,6 +60,7 @@ export default {
   justify-content: center;
   font-family: "Lexend Deca", sans-serif;
   background: url("../../static/assets/star.png"), #e6e6e6;
+  text-align: center;
 }
 
 form {
@@ -67,6 +69,7 @@ form {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  padding: 1rem;
 }
 
 form > * {
@@ -123,5 +126,26 @@ a {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.5rem;
+}
+
+@media only screen and (max-width: 600px) {
+  form h2 {
+    font-size: 40px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  form button {
+    width: 100%;
+  }
+  form input {
+    width: calc(100vw - 2rem);
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  form h2 {
+    font-size: 30px;
+  }
 }
 </style>

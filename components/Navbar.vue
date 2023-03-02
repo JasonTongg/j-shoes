@@ -9,7 +9,6 @@
         <li>
           Cart
           <img src="../static/assets/icon/cart.svg" alt="cart" />
-          <p v-show="cart.length > 0"></p>
         </li>
         <nuxtLink tag="li" to="/admin" v-if="userData.userName">{{
           userData.userName
@@ -17,8 +16,8 @@
         <li v-if="userData.userName" @click="logout">Logout</li>
         <nuxtLink tag="li" to="/login" v-else>Login</nuxtLink>
       </ul>
+      <img src="../static/assets/burger-bar.png" alt="menu" />
     </nav>
-    {{ cart }}
   </header>
 </template>
 <script>
@@ -32,10 +31,6 @@ export default {
     userData() {
       return this.$store.getters.getUserData;
     },
-  },
-  mounted() {
-    this.$store.dispatch("getUserCart");
-    this.cart = this.$store.getters.getCart;
   },
   methods: {
     logout() {
@@ -122,5 +117,36 @@ header nav ul li:nth-of-type(5) {
   padding: 0.5rem 1rem;
   border-radius: 100px;
   color: white;
+}
+
+header nav > img {
+  width: 30px;
+  display: none;
+}
+
+@media only screen and (max-width: 1000px) {
+  header nav > img {
+    display: block;
+  }
+
+  header nav ul {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  header nav {
+    padding-inline: 2rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  header nav {
+    padding-inline: 1rem;
+  }
+
+  header nav h2 {
+    font-size: 1.4rem;
+  }
 }
 </style>

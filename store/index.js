@@ -18,6 +18,9 @@ export const getters = {
   getCart(state) {
     return state.cart;
   },
+  isAuthenticated(state) {
+    return state.token != null;
+  },
 };
 
 export const mutations = {
@@ -62,6 +65,36 @@ export const actions = {
         commit("setShoes", shoeArray);
       })
       .catch((e) => context.error(e));
+  },
+  initAuth({ commit, dispatch }, req) {
+    let user;
+    let token;
+    if (req) {
+      if (!req.headers.cookie) {
+        return;
+      }
+      const jwtCookie = req.headers.cookie
+        .split(";")
+        .find((c) => c.trim().startsWith("jwt="));
+
+      const accUserCookie = req.headers.cookie
+        .split(";")
+        .find((c) => c.trim().startsWith("acc_user="));
+      console.log(req.headers);
+
+      const userCookie = accUserCookie.substr(accUserCookie.indexOf("=") + 1);
+      user = JSON.parse(decodeURIComponent(userCookie));
+
+      if (!jwtCookie) {
+        return;
+      }
+      token = jwtCookie.split("=")[1];
+    } else {
+      token = localStorage.getItem("token");
+      user = JSON.parse(localStorage.getItem("user"));
+    }
+    commit("setToken", token);
+    commit("setUserData", user);
   },
   addUserCart({ state, commit }, shoe) {
     return axios
@@ -157,17 +190,17 @@ export const actions = {
         });
         localStorage.setItem("token", response.data.idToken);
         Cookie.set("jwt", response.data.idToken);
+        Cookie.set(
+          "acc_user",
+          JSON.stringify({
+            userId: response.data.localId,
+            email: response.data.email,
+            userName: response.data.displayName,
+          })
+        );
         if (authData.isLogin === false) {
           localStorage.setItem(
             "user",
-            JSON.stringify({
-              userId: response.data.localId,
-              email: response.data.email,
-              userName: response.data.displayName,
-            })
-          );
-          Cookie.set(
-            "acc_user",
             JSON.stringify({
               userId: response.data.localId,
               email: response.data.email,

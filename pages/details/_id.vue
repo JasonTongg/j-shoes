@@ -4,7 +4,7 @@
     <main>
       <img :src="shoe.image" :alt="shoe.name" />
       <div class="info">
-        <h2>{{ shoe.name }}</h2>
+        <h2>{{ shoe.title }}</h2>
         <p>Rp. {{ Math.round(shoe.price * 1.6) }},-</p>
         <p>Rp. {{ shoe.price }},-</p>
         <p>
@@ -28,6 +28,7 @@ export default {
     Navbar,
     Footer,
   },
+  middleware: "check-auth",
   data() {
     return {
       shoe: this.$route.query.shoes,
@@ -90,5 +91,29 @@ button {
   font-size: 1.2rem;
   border-radius: 10px;
   cursor: pointer;
+}
+
+main .info p:last-of-type {
+  text-align: justify;
+}
+
+@media only screen and (max-width: 900px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  main img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  main {
+    padding-inline: 1rem;
+  }
 }
 </style>

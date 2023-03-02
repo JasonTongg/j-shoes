@@ -7,16 +7,16 @@
         <label for="title">Title</label>
         <input
           type="text"
-          :placeholder="shoe.name"
+          :placeholder="shoe.title"
           id="title"
-          v-model="shoe.name"
+          v-model="shoe.title"
         />
       </div>
       <div class="inputContainer">
         <label for="price">Price</label>
         <input
           type="text"
-          :placeholder="shoe.name"
+          :placeholder="shoe.price"
           id="price"
           v-model="shoe.price"
         />
@@ -26,8 +26,8 @@
         <input
           type="text"
           id="file"
-          :placeholder="shoe.img"
-          v-model="shoe.img"
+          :placeholder="shoe.image"
+          v-model="shoe.image"
         />
       </div>
       <button type="submit">Submit</button>
@@ -42,6 +42,7 @@ export default {
       shoe: this.$route.query.shoes,
     };
   },
+  middleware: ["check-auth", "auth"],
   methods: {
     updateItem() {
       this.$store
@@ -64,6 +65,7 @@ export default {
   font-family: "Lexend Deca", sans-serif;
   background: url("../../static/assets/star-white.png"), #093545;
   color: white;
+  text-align: center;
 }
 
 form {
@@ -128,5 +130,26 @@ a {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.5rem;
+}
+
+@media only screen and (max-width: 600px) {
+  form h2 {
+    font-size: 40px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  form button {
+    width: 100%;
+  }
+  form input {
+    width: calc(100vw - 2rem);
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  form h2 {
+    font-size: 30px;
+  }
 }
 </style>
