@@ -16,7 +16,6 @@
       <p>Already have account? <nuxt-link to="/login">Login</nuxt-link></p>
     </form>
     <nuxtLink class="back" to="/">Back</nuxtLink>
-    {{ userName }}
   </div>
 </template>
 <script>

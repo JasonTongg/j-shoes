@@ -7,8 +7,22 @@
         <div class="item" v-for="shoe in shoes">
           <img :src="shoe.image" alt="" />
           <h2>{{ shoe.title }}</h2>
-          <h3>Rp. {{ Math.round(shoe.price * 1.6) }},-</h3>
-          <h3>Rp. {{ shoe.price }},-</h3>
+          <h3>
+            {{
+              new Intl.NumberFormat("Rp", {
+                style: "currency",
+                currency: "idr",
+              }).format(Math.round(shoe.price * 1.6))
+            }}
+          </h3>
+          <h3>
+            {{
+              new Intl.NumberFormat("Rp", {
+                style: "currency",
+                currency: "idr",
+              }).format(shoe.price)
+            }}
+          </h3>
           <nuxt-link
             tag="button"
             :to="{ path: 'details', query: { shoes: shoe } }"
@@ -49,9 +63,17 @@ export default {
   box-sizing: border-box;
   font-family: "Lexend Deca", sans-serif;
 }
+#wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 main {
   padding: 2rem 5rem;
   text-align: center;
+  width: 100%;
 }
 
 main h2 {

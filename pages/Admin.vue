@@ -12,8 +12,22 @@
         >
           <img :src="shoe.image" alt="" />
           <h2>{{ shoe.title }}</h2>
-          <h3>Rp. {{ Math.round(shoe.price * 1.6) }},-</h3>
-          <h3>Rp. {{ shoe.price }},-</h3>
+          <h3>
+            {{
+              new Intl.NumberFormat("Rp", {
+                style: "currency",
+                currency: "idr",
+              }).format(Math.round(shoe.price * 1.6))
+            }}
+          </h3>
+          <h3>
+            {{
+              new Intl.NumberFormat("Rp", {
+                style: "currency",
+                currency: "idr",
+              }).format(shoe.price)
+            }}
+          </h3>
           <div class="buttons">
             <button @click="toggleOverlay(true, shoe.id)">
               <img src="../static/assets/icon/trash.svg" alt="trash" /> Delete
@@ -28,6 +42,13 @@
             >
           </div>
         </div>
+        <h2
+          v-if="
+            shoes.filter((item) => item.userId === userData.userId).length === 0
+          "
+        >
+          Shoes not found!!
+        </h2>
       </div>
     </main>
     <Footer></Footer>
@@ -41,7 +62,9 @@
         </div>
       </div>
     </div>
-    <button class="addButton">+</button>
+    <NuxtLink tag="button" to="/add" class="addButton">
+      <img src="../static/assets/plus.png" alt="plus" />
+    </NuxtLink>
   </div>
 </template>
 
@@ -96,10 +119,19 @@ export default {
   box-sizing: border-box;
   font-family: "Lexend Deca", sans-serif;
 }
+
+#wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 main {
   padding: 2rem 5rem;
   text-align: center;
   position: relative;
+  width: 100%;
 }
 
 main h2 {
@@ -246,6 +278,14 @@ main .productItems .item button {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.addButton img {
+  width: 30px;
 }
 
 @media only screen and (max-width: 600px) {

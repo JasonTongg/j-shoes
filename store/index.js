@@ -48,23 +48,31 @@ export const mutations = {
     return state.cart.push(payload);
   },
   setToCart(state, payload) {
-    console.log(payload);
     state.cart = payload;
   },
 };
 
 export const actions = {
   nuxtServerInit({ commit }) {
-    return axios
-      .get("https://j-shoe-default-rtdb.firebaseio.com/shoeList.json")
-      .then((response) => {
-        const shoeArray = [];
-        for (const key in response.data) {
-          shoeArray.push({ ...response.data[key], id: key });
-        }
-        commit("setShoes", shoeArray);
-      })
-      .catch((e) => context.error(e));
+    let url1 = "https://j-shoe-default-rtdb.firebaseio.com/shoeList.json";
+    let url2 = "https://j-shoe-default-rtdb.firebaseio.com/shoeList.json";
+
+    let promise1 = axios.get(url1).then(function (response) {
+      const shoeArray = [];
+      for (const key in response.data) {
+        shoeArray.push({ ...response.data[key], id: key });
+      }
+      commit("setShoes", shoeArray);
+    });
+    let promise2 = axios.get(url2).then(function (response) {
+      const shoeArray = [];
+      for (const key in response.data) {
+        shoeArray.push({ ...response.data[key], id: key });
+      }
+      commit("setShoes", shoeArray);
+    });
+
+    return Promise.all([promise1, promise2]).then();
   },
   initAuth({ commit, dispatch }, req) {
     let user;
@@ -80,7 +88,6 @@ export const actions = {
       const accUserCookie = req.headers.cookie
         .split(";")
         .find((c) => c.trim().startsWith("acc_user="));
-      console.log(req.headers);
 
       const userCookie = accUserCookie.substr(accUserCookie.indexOf("=") + 1);
       user = JSON.parse(decodeURIComponent(userCookie));
